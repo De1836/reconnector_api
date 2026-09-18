@@ -1,0 +1,19 @@
+{
+  "name": "reconnector_api",
+  "version": "1.0.0",
+  "description": "api for reconnector tool",
+  "repository": {
+    "type": "git",
+    "url": "reconnector_api"
+  },
+  "license": "ISC",
+  "author": "Julian Chan",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
