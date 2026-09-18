@@ -1,0 +1,35 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Editor directories and files
+.idea
+.DS_Store
+*.sublime-project
+*.sublime-workspace
+
+# IDEA
+.idea
+*.iml
+*.ipr
+*.iws
+
+# VSCode
+.vscode/*
+
+# npm
+/node_modules
+
+# Yarn
+/yarn.lock
+
+# dotenv
+.env
+.env.test
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# im sorry its ai generated but like its a gitignore what do you want me to do
