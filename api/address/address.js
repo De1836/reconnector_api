@@ -12,15 +12,25 @@ const clients = [];
 const responsedata = {
     "ip": IP,
     "port": 1836,
-    "host_active": "undefined",
-    "connecting_client_active": "undefined"
+    "host_inactive": "undefined",
+    "connecting_client_inactive": "undefined"
 };
 
-function updateResponseData(ip, port, host_active, connecting_client_active) {
-    responsedata.ip = ip;
-    responsedata.port = port;
-    responsedata.host_active = host_active;
-    responsedata.connecting_client_active = connecting_client_active;
+function updateIp(newIp) {
+    IP = newIp;
+    responsedata.ip = newIp;
+}
+
+function updatePort(newPort) {
+    responsedata.port = newPort;
+}
+
+function updateHostStatus(isActive) {
+    responsedata.host_inactive = isActive ? "True" : "False";
+}
+
+function updateClientStatus(isActive) {
+    responsedata.connecting_client_inactive = isActive ? "True" : "False";
 }
 
 // test
@@ -42,11 +52,26 @@ router.patch('/host/:key/:status', (req, res) => {
     if (key !== UPLOAD_KEY) {
         return res.status(401).send('Unauthorized');
     }
-    updateResponseData(IP, 1836, status === 'True', responsedata.connecting_client_active);
+
+    updateHostStatus(status === 'True');
+
     res.status(200).json(responsedata);
 });
 
-// update ip and client status ("attacker")
+// update port number used in connection
+router.patch('/port/:key/:newport', (req, res) => {
+    const key = req.params.key;
+    const newPort = req.params.newport;
+    if (key !== UPLOAD_KEY) {
+        return res.status(401).send('Unauthorized');
+    }
+
+    updatePort(newPort);
+
+    res.status(200).json(responsedata);
+});
+
+// update ip and status as client ("attacker")
 router.patch('/client/:key/:newip/:status', (req, res) => {
     const key = req.params.key;
     const newIp = req.params.newip;
@@ -55,15 +80,16 @@ router.patch('/client/:key/:newip/:status', (req, res) => {
         return res.status(401).send('Unauthorized');
     }
     
-    IP = newIp;
+    updateIp(newIp);
+    updateClientStatus(status === 'True');
     
     clients.forEach(client => {
         client.write(`${IP}\n`);
     });
 
-    updateResponseData(IP, 1836, responsedata.host_active, status === 'True');
-    
     res.status(200).json(responsedata);
+
+    console.log(responsedata);
 });
 
 module.exports = router;
